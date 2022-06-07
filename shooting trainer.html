@@ -1,0 +1,106 @@
+<canvas id="gc" width="1500" height="800"></canvas>
+
+<body>
+	<div id="time" style="font-size:8vw"></div>
+
+
+<script>
+
+
+
+var div = document.getElementById("gc");
+div.onmouseover = function(){
+    this.style.cursor = "crosshair";
+};
+
+window.onload=function(){
+	canv=document.getElementById("gc");
+	draw();
+	ctx=canv.getContext("2d");
+
+}
+
+function draw() {
+  const ctx = document.getElementById('gc').getContext('2d');
+  ctx.font = '80px serif';
+  ctx.textAlign ='center';
+  ctx.textBaseline = 'middle';
+  ctx.strokeText('CLICK TO START', 1500/2, 800/2);
+}
+
+ts=15;
+tx = Math.random()*1450;
+ty = Math.random()*750;
+score=0;
+
+	var timeLeft = 30;
+    var elem = document.getElementById('time');
+
+	document.getElementById('gc').onclick = function changeContent() {
+		if(timeLeft>=30){
+		elem.innerHTML = timeLeft + ' seconds remaining';
+		timeLeft--;
+		var timerId = setInterval(countdown, 1000);
+	}
+
+
+}
+
+    function endgame(){
+    	ctx.fillStyle="white";
+		ctx.fillRect(0, 0, canv.width, canv.height);
+		ctx.font = '80px serif';
+  		ctx.textAlign ='center';
+  		ctx.textBaseline = 'middle';
+		ctx.strokeText('GAME OVER', 1500/2, 800/2);
+		ctx.strokeText('SCORE:'+score, 1500/2, 800/2+100); 
+    }
+    
+    function countdown() {
+      if (timeLeft <0) {
+        clearTimeout(timerId); 
+           
+      } else {
+      		elem.innerHTML = timeLeft + ' seconds remaining';
+        	timeLeft--;
+      }
+    }
+
+	
+div.addEventListener('click', function(event) {
+	if(timeLeft>-1){
+	ctx.fillStyle="black";
+	ctx.fillRect(0,0,canv.width,canv.height);
+	ctx.fillStyle="red";
+	ctx.fillRect(tx,ty,ts,ts);
+	ctx.fillStyle = "green";
+	ctx.font = '50px';
+	ctx.fillText("score:"+score,150,50);
+	var x = event.clientX;
+    var y = event.clientY;
+	if (y > ty+ts/2 && y < ty+ts+ts/2 && x > tx+ts/2 && x < tx+ts+ts/2){
+		score++;
+		ctx.fillStyle="black";
+		ctx.fillRect(0,0,canv.width,canv.height);
+		ctx.fillStyle = "green";
+		ctx.fillText("score:"+score,150,50);
+		tx = Math.random()*1450;
+		ty = Math.random()*750;
+		ctx.fillStyle="red";
+		ctx.fillRect(tx,ty,ts,ts);
+		}
+	
+		}else{
+		endgame();  
+	}
+},false);
+
+
+
+
+
+
+
+
+</script>
+</body>
